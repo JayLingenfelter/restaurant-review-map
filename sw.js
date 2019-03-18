@@ -1,3 +1,5 @@
+// Creates a cache and populates it with copies of accessed
+// files to be accessed again offline
 this.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open("restaurantMap").then(function(cache) {
@@ -24,6 +26,7 @@ this.addEventListener('install', function(event) {
   );
 });
 
+// Returns the cached files as an object map
 this.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
@@ -38,6 +41,9 @@ this.addEventListener('activate', function(event) {
   );
 });
 
+
+// Checks for a network response and, upon not receiving one,
+// accesses the cached files to still serve up the webpage
 this.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then(response => {
